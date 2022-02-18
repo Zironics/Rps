@@ -4,10 +4,39 @@ let hscore=document.querySelector(".hscore");
 let cscore=document.querySelector(".cscore");
 let playerSelection;
 let p=document.querySelector(".comment");
+let overlay=document.querySelector('.overlay');
+let final=document.querySelector('.final')
+let button=document.querySelector(".again");
+let fs=document.querySelector('.final-score');
 
 function computerSelect()
 {
     return Math.floor(Math.random()*3);
+}
+
+function isEnd()
+{
+    return (hscore.textContent=='5' || cscore.textContent=='5');
+}
+
+function openEndGame()
+{
+    overlay.classList.add('active');
+    final.classList.add("active");
+    if(hscore.textContent=='5')
+    {
+        fs.textContent='You Won!';
+    }
+    else
+    {
+        fs.textContent='You Lost!';
+    }
+}
+
+function closeEndGame()
+{
+    overlay.classList.remove('active');
+    final.classList.remove('active');
 }
 
 function round(playerSelection)
@@ -16,8 +45,8 @@ function round(playerSelection)
     if(playerSelection.toLowerCase()=='rock' && d==1) return "You lost the round! Paper beats rock";
     if(playerSelection.toLowerCase()=='rock' && d==2) return "You won the round! rock beats scissors";
     if(playerSelection.toLowerCase()=='paper' && d==0) return "You won the round! paper beats rock";
-    if(playerSelection.toLowerCase()=='paper' && d==2) return "You lose the round! scissors beats paper";
-    if(playerSelection.toLowerCase()=='scissors' && d==0) return "You lose the round! rock beats scissors";
+    if(playerSelection.toLowerCase()=='paper' && d==2) return "You lost the round! scissors beats paper";
+    if(playerSelection.toLowerCase()=='scissors' && d==0) return "You lost the round! rock beats scissors";
     if(playerSelection.toLowerCase()=='scissors' && d==1) return "You won the round! scissors beats paper";
     return 'Its a tie!';
 }
@@ -25,6 +54,14 @@ function round(playerSelection)
 item.forEach(element => {
     element.addEventListener('click',function(e){
         element.classList.add('transform');
+        setTimeout(() => {
+            element.classList.remove("transform");
+        }, 200);
+        if(isEnd())
+        {
+            openEndGame();
+            return;
+        }
         if(element.classList.contains("rock"))
         {
             playerSelection='rock';
@@ -43,30 +80,13 @@ item.forEach(element => {
     let q=parseInt(cscore.textContent);
     if(result.substring(0,7)=='You won')
     {
-        n=n+1;
-        if(n==5)
-        {
-            p.textContent="You Won congratulations!";
-            n=0;
-            q=0;
-        }
-        else
-        {
-            p.textContent=result;
-        }
+        n+=1;
+        p.textContent=result;
     }
     else if(result.substring(0,7)=='You los')
     {
         q+=1;
-        if(q==5)
-        {
-            p.textContent="You Lost! Machines will overtake humanity because of you";
-            n=0;
-            q=0;
-        }
-        else{
-            p.textContent=result;
-        }
+        p.textContent=result;
     }
     else
     {
@@ -74,13 +94,22 @@ item.forEach(element => {
     }
     hscore.textContent=""+n;
     cscore.textContent=""+q;
-      
-    });
-
-    element.addEventListener('transitionend',function(e){
-        if(e.propertyName=='background-color')
-        {
-            element.classList.remove('transform');
-        }
-    })
+    if(isEnd())
+    {
+        openEndGame();
+        return;
+    }
 });
+      
+});
+
+overlay.addEventListener('click',closeEndGame);
+button.addEventListener('click',restartGame);
+
+function restartGame()
+{
+    closeEndGame();
+    hscore.textContent='0';
+    cscore.textContent='0';
+    p.textContent='';
+}

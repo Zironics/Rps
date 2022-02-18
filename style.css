@@ -62,7 +62,7 @@ h1{
    transition: 0.2s;
 }
 
-.item:hover
+ .item:hover
 {
     transform: scale(1.2);
     border-color:#fe960f;
@@ -110,4 +110,56 @@ ul{
 li{
     font-size: 16px;
     margin-bottom: 12px;
+}
+
+.overlay{
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    height: 100%;
+    width:100%;
+    opacity: 0.6;
+    background-color: black;
+}
+
+.overlay.active{
+    display: block;
+}
+
+.final.active{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      transform: scale(1);
+}
+
+.final{
+    display:none;
+    position: absolute;
+    top:0; bottom:0; right:0; left:0;
+    margin:auto;
+    z-index: 1;
+    height: 200px;
+    width:300px;
+    padding: 16px;
+    color: white;
+    background-color: #0b0a10;
+    text-align: center;
+    border-radius: 32px;
+    font-size: 32px;
+    font-weight: bold;
+    transition: 0.2s;
+    transform: scale(0);
+}
+
+.again{
+    background-color: #fe960f;
+    color: #0b0a10;
+    padding:10px 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 5px;
+    margin:0 auto;
 }
